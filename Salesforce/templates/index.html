@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Salesforce Login</title>
+
+    <!-- Connect CSS -->
+    <link rel="stylesheet" href="/static/style1.css">
+</head>
+
+<body>
+
+    <!-- HEADING -->
+    <h1>Welcome To Salesforce</h1>
+
+    <!-- LOGIN FORM -->
+    <form class="login-form" method="POST">
+
+        <!-- USERNAME -->
+        <div class="input-box">
+            <input type="text"
+                name="username"
+                id="username"
+                required>
+
+            <label for="username">Username</label>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="input-box">
+            <input type="password"
+                name="password"
+                id="password"
+                required>
+
+            <label for="password">Password</label>
+        </div>
+
+        <!-- LOGIN BUTTON -->
+        <button type="submit" class="login-btn">
+            LOGIN
+        </button>
+
+    {% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+
+{% if success %}
+<p class="success">{{ success }}</p>
+{% endif %}
+    </form>
+
+</body>
+</html>

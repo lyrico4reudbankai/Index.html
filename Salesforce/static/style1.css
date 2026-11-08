@@ -1,0 +1,203 @@
+/* ============================= */
+/* BODY */
+/* ============================= */
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: pink;
+    font-family: Arial, sans-serif;
+}
+
+
+/* ============================= */
+/* HEADING */
+/* ============================= */
+
+h1 {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    white-space: nowrap;
+    color: black;
+}
+
+
+/* ============================= */
+/* LOGIN FORM */
+/* ============================= */
+
+.login-form {
+    display: grid;
+    grid-template-columns: 250px;
+    gap: 30px;
+    justify-items: center;
+}
+
+
+/* ============================= */
+/* INPUT BOX */
+/* ============================= */
+
+.input-box {
+    position: relative;
+    width: 250px;
+}
+
+
+/* ============================= */
+/* INPUT FIELDS */
+/* ============================= */
+
+.input-box input {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 2px solid cyan;
+    outline: none;
+    color: black;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+
+/* ============================= */
+/* FLOATING LABELS */
+/* ============================= */
+
+.input-box label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: black;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    background: pink;
+    padding: 0 5px;
+    font-size: 16px;
+}
+
+
+/* ============================= */
+/* LABEL ANIMATION */
+/* ============================= */
+
+.input-box input:focus + label,
+.input-box input:valid + label {
+    top: 0;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: cyan;
+}
+
+
+/* ============================= */
+/* INPUT GLOW */
+/* ============================= */
+
+.input-box input:focus {
+    border-color: aqua;
+    box-shadow: 0 0 10px cyan,
+                0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+
+/* ============================= */
+/* LOGIN BUTTON */
+/* ============================= */
+
+.login-btn {
+    width: 250px;
+    padding: 12px;
+    background-color: cyan;
+    border: 2px solid cyan;
+    border-radius: 8px;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+/* BUTTON HOVER */
+
+.login-btn:hover {
+    background-color: black;
+    color: cyan;
+    box-shadow: 0 0 15px cyan;
+    transform: scale(1.05);
+}
+
+
+/* BUTTON CLICK */
+
+.login-btn:active {
+    background-color: aqua;
+    transform: scale(0.95);
+}
+
+
+/* ============================= */
+/* ERROR MESSAGE */
+/* ============================= */
+
+.error {
+    color: red;
+    text-align: center;
+}
+
+
+/* ============================= */
+/* SUCCESS MESSAGE */
+/* ============================= */
+
+.success {
+    color: green;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/* ============================= */
+/* DASHBOARD */
+/* ============================= */
+
+.dashboard {
+    text-align: center;
+    padding: 30px;
+}
+
+
+/* ============================= */
+/* LOGOUT BUTTON */
+/* ============================= */
+
+.logout-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: cyan;
+    color: black;
+    text-decoration: none;
+    border: 2px solid cyan;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+
+/* LOGOUT HOVER */
+
+.logout-btn:hover {
+    background: black;
+    color: cyan;
+    box-shadow: 0 0 15px cyan;
+}
