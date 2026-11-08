@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6f8ff">
+  <title>Multiply — multiplication made simple</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1c2340;
+      --muted: #737b96;
+      --purple: #6855e8;
+      --purple-dark: #5140cb;
+      --lavender: #f0edff;
+      --line: #eceef5;
+      --surface: #ffffff;
+      --page: #f6f8ff;
+      --green: #21835d;
+      --red: #c44e56;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 8% 0%, rgba(215, 207, 255, .44), transparent 35%),
+        var(--page);
+    }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .topbar {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 30px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--ink);
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -.7px;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 35px;
+      height: 35px;
+      place-items: center;
+      border-radius: 11px;
+      color: #fff;
+      background: var(--purple);
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .top-note {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    main {
+      width: min(100% - 40px, 880px);
+      margin: 52px auto 60px;
+    }
+
+    .intro { margin-bottom: 27px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 13px;
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(35px, 6vw, 54px);
+      letter-spacing: -2.8px;
+      line-height: 1.08;
+    }
+
+    .intro p {
+      max-width: 490px;
+      margin: 13px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1.16fr) minmax(280px, .84fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .card {
+      overflow: hidden;
+      border: 1px solid rgba(231, 233, 243, .9);
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: 0 12px 35px rgba(43, 49, 88, .055);
+    }
+
+    .generator { padding: 24px; }
+
+    .section-heading {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 750;
+      letter-spacing: -.35px;
+    }
+
+    .section-caption {
+      margin: 5px 0 21px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 9px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .number-entry {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .number-input {
+      width: 112px;
+      height: 48px;
+      padding: 0 13px;
+      border: 1px solid #dedff0;
+      border-radius: 10px;
+      outline: none;
+      color: var(--ink);
+      background: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .number-input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(104, 85, 232, .14);
+    }
+
+    .entry-hint { color: var(--muted); font-size: 12px; }
+
+    .preset-label {
+      margin: 20px 0 9px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .presets { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .preset {
+      min-width: 38px;
+      height: 34px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: #515875;
+      background: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      transition: .18s ease;
+    }
+
+    .preset:hover, .preset[aria-pressed="true"] {
+      border-color: #d8d2ff;
+      color: var(--purple-dark);
+      background: var(--lavender);
+    }
+
+    .generate-button, .copy-button {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 750;
+      transition: background .18s, transform .18s;
+    }
+
+    .generate-button {
+      width: 100%;
+      margin-top: 22px;
+      color: white;
+      background: var(--purple);
+      box-shadow: 0 5px 12px rgba(104, 85, 232, .2);
+    }
+
+    .generate-button:hover { background: var(--purple-dark); transform: translateY(-1px); }
+    button:focus-visible { outline: 3px solid rgba(104, 85, 232, .38); outline-offset: 2px; }
+
+    .table-card { padding: 22px 24px 15px; }
+
+    .table-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .table-title { font-size: 16px; font-weight: 800; }
+    .table-caption { margin-top: 3px; color: var(--muted); font-size: 11px; }
+
+    .copy-button {
+      min-height: 33px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      color: #565d78;
+      background: #fff;
+      font-size: 11px;
+    }
+
+    .copy-button:hover { color: var(--purple-dark); background: #f8f7ff; }
+
+    .equations { display: grid; gap: 4px; }
+
+    .equation {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      min-height: 31px;
+      padding: 0 10px;
+      border-radius: 7px;
+      color: #616982;
+      font-size: 13px;
+      transition: background .15s;
+    }
+
+    .equation:nth-child(odd) { background: #f8f9fd; }
+    .equation strong { color: var(--ink); font-size: 13px; }
+
+    .quiz-card {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+      padding: 21px 24px;
+      border-color: #e3dfff;
+      background: linear-gradient(110deg, #fbfaff, #f3f0ff);
+    }
+
+    .quiz-copy { min-width: 0; }
+    .quiz-title { margin: 0; font-size: 15px; font-weight: 800; }
+    .quiz-question { margin: 5px 0 0; color: #686f89; font-size: 13px; }
+    .quiz-controls { display: flex; flex: 0 0 auto; align-items: center; gap: 8px; }
+
+    .answer-input {
+      width: 94px;
+      height: 39px;
+      padding: 0 10px;
+      border: 1px solid #e0dcf4;
+      border-radius: 8px;
+      outline: none;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .answer-input:focus { border-color: var(--purple); }
+
+    .check-button {
+      height: 39px;
+      padding: 0 14px;
+      border: 0;
+      border-radius: 8px;
+      color: #fff;
+      background: #292e48;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .feedback {
+      min-height: 17px;
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .feedback.correct { color: var(--green); }
+    .feedback.incorrect { color: var(--red); }
+
+    footer {
+      margin: 23px 0 0;
+      color: #9096a9;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    @media (max-width: 660px) {
+      .topbar { height: 65px; padding: 0 20px; }
+      main { width: min(100% - 32px, 460px); margin: 36px auto 40px; }
+      .workspace { grid-template-columns: 1fr; }
+      .quiz-card { grid-column: auto; align-items: flex-start; flex-direction: column; gap: 12px; }
+      .quiz-controls { width: 100%; }
+      .answer-input { flex: 1; }
+      h1 { letter-spacing: -1.9px; }
+    }
+
+    @media (max-width: 370px) {
+      .top-note { font-size: 11px; }
+      .generator, .table-card { padding-right: 18px; padding-left: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Multiply home">
+      <span class="brand-mark" aria-hidden="true">×</span>
+      <span>multiply</span>
+    </a>
+    <span class="top-note">A little practice goes a long way ✨</span>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <div class="eyebrow"><span aria-hidden="true">✳</span> Your practice space</div>
+      <h1 id="page-title">Multiplication,<br>made simple.</h1>
+      <p>Pick a number, explore its times table, and see how many you can get right. You’ve got this!</p>
+    </section>
+
+    <section class="workspace" aria-label="Multiplication practice">
+      <form class="card generator" id="generator-form">
+        <h2 class="section-heading">Build your times table</h2>
+        <p class="section-caption">Choose any number and we'll do the multiplying.</p>
+
+        <label class="field-label" for="number-input">I want to practice the</label>
+        <div class="number-entry">
+          <input class="number-input" id="number-input" name="number" type="number" min="0" max="999" value="5" required aria-describedby="entry-hint">
+          <span class="entry-hint" id="entry-hint">times table</span>
+        </div>
+
+        <p class="preset-label">Quick picks</p>
+        <div class="presets" aria-label="Choose a quick-pick number">
+          <button class="preset" type="button" data-number="2" aria-pressed="false">2</button>
+          <button class="preset" type="button" data-number="3" aria-pressed="false">3</button>
+          <button class="preset" type="button" data-number="5" aria-pressed="true">5</button>
+          <button class="preset" type="button" data-number="7" aria-pressed="false">7</button>
+          <button class="preset" type="button" data-number="10" aria-pressed="false">10</button>
+          <button class="preset" type="button" data-number="12" aria-pressed="false">12</button>
+        </div>
+        <button class="generate-button" type="submit"><span aria-hidden="true">✦</span> Show my table</button>
+      </form>
+
+      <section class="card table-card" aria-labelledby="table-title">
+        <div class="table-top">
+          <div>
+            <div class="table-title" id="table-title">The 5 times table</div>
+            <div class="table-caption">Your table, from 1 to 10</div>
+          </div>
+          <button class="copy-button" id="copy-button" type="button" aria-label="Copy the times table">▢ Copy</button>
+        </div>
+        <div class="equations" id="equations" aria-live="polite"></div>
+      </section>
+
+      <section class="card quiz-card" aria-labelledby="quiz-title">
+        <div class="quiz-copy">
+          <h2 class="quiz-title" id="quiz-title">Quick challenge <span aria-hidden="true">⚡</span></h2>
+          <p class="quiz-question" id="quiz-question">What is 5 × 7?</p>
+          <div class="feedback" id="feedback" aria-live="polite"></div>
+        </div>
+        <form class="quiz-controls" id="quiz-form">
+          <label for="answer-input" class="field-label" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">Your answer</label>
+          <input class="answer-input" id="answer-input" type="number" placeholder="Your answer" required>
+          <button class="check-button" type="submit">Check answer</button>
+        </form>
+      </section>
+    </section>
+    <footer>Made for curious minds. Keep going — you're doing great.</footer>
+  </main>
+
+  <script>
+    const numberInput = document.querySelector("#number-input");
+    const tableTitle = document.querySelector("#table-title");
+    const equations = document.querySelector("#equations");
+    const quizQuestion = document.querySelector("#quiz-question");
+    const answerInput = document.querySelector("#answer-input");
+    const feedback = document.querySelector("#feedback");
+    let currentNumber = 5;
+    let quizMultiplier = 7;
+
+    function renderTable(number) {
+      currentNumber = number;
+      tableTitle.textContent = `The ${number} times table`;
+      equations.replaceChildren();
+
+      for (let multiplier = 1; multiplier <= 10; multiplier += 1) {
+        const row = document.createElement("div");
+        row.className = "equation";
+        const expression = document.createElement("span");
+        expression.textContent = `${number} × ${multiplier}`;
+        const result = document.createElement("strong");
+        result.textContent = String(number * multiplier);
+        row.append(expression, result);
+        equations.append(row);
+      }
+
+      document.querySelectorAll(".preset").forEach((button) => {
+        button.setAttribute("aria-pressed", String(Number(button.dataset.number) === number));
+      });
+      makeQuestion();
+      feedback.textContent = "";
+      feedback.className = "feedback";
+      answerInput.value = "";
+    }
+
+    function makeQuestion() {
+      quizMultiplier = Math.floor(Math.random() * 10) + 1;
+      quizQuestion.textContent = `What is ${currentNumber} × ${quizMultiplier}?`;
+    }
+
+    document.querySelector("#generator-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!numberInput.reportValidity()) return;
+
+      const number = Number(numberInput.value);
+      if (!Number.isInteger(number) || number < 0 || number > 999) {
+        numberInput.setCustomValidity("Enter a whole number from 0 to 999.");
+        numberInput.reportValidity();
+        numberInput.setCustomValidity("");
+        return;
+      }
+      renderTable(number);
+    });
+
+    numberInput.addEventListener("input", () => numberInput.setCustomValidity(""));
+
+    document.querySelectorAll(".preset").forEach((button) => {
+      button.addEventListener("click", () => {
+        numberInput.value = button.dataset.number;
+        renderTable(Number(button.dataset.number));
+      });
+    });
+
+    document.querySelector("#quiz-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const answer = Number(answerInput.value);
+      const isCorrect = answer === currentNumber * quizMultiplier;
+      feedback.textContent = isCorrect
+        ? "That's right! Nicely done 🎉"
+        : "Not quite — give it another try!";
+      feedback.className = `feedback ${isCorrect ? "correct" : "incorrect"}`;
+      if (isCorrect) {
+        makeQuestion();
+        answerInput.value = "";
+      }
+    });
+
+    document.querySelector("#copy-button").addEventListener("click", async (event) => {
+      const text = Array.from(equations.children, (row) => {
+        const [expression, result] = row.children;
+        return `${expression.textContent} = ${result.textContent}`;
+      }).join("\n");
+
+      try {
+        await navigator.clipboard.writeText(text);
+        event.currentTarget.textContent = "✓ Copied!";
+        window.setTimeout(() => { event.currentTarget.textContent = "▢ Copy"; }, 1600);
+      } catch (error) {
+        feedback.textContent = "Copy isn't available here. You can still read the table above.";
+        feedback.className = "feedback incorrect";
+      }
+    });
+
+    renderTable(currentNumber);
+  </script>
+</body>
+</html>
